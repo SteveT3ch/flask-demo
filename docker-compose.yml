@@ -3,7 +3,7 @@ services:
   flask-demo:
     build:
       context: .
-    command: gunicorn -b 0.0.0.0:8000 --reload --log-level=DEBUG --access-logfile - "app:app"
+    command: gunicorn -b 0.0.0.0:8000 --reload --access-logfile - "app:app"
     environment:
       PYTHONUNBUFFERED: 1
     volumes:

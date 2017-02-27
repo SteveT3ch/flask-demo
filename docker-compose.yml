@@ -1,0 +1,12 @@
+version: '2'
+services:
+  flask-demo:
+    build:
+      context: .
+    command: gunicorn -b 0.0.0.0:8000 --reload --access-logfile - "app:app"
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - '8000:8000'
+    volumes:
+    - .:/app

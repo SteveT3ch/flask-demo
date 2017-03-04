@@ -1,20 +1,33 @@
-from flask import Flask, request, render_template
-import redis
+import os
+from flask import Flask, request, render_template, url_for, redirect
 
 app = Flask(__name__)
-app.debug = True
 
-@app.route('/')
-def mainpage():
-    return render_template('index.html')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST' and request.form['username'] is not '':
+        username = request.form['username']
+        password = request.form['password']
+        if valid_login(username, password):
+            return redirect(url_for('welcome', username=username))
+        else:
+            error = 'Incorrect username and password'
 
-@app.route('/user/<username>')
-def show_user_profile(username):
-    return "User " + str(username)
+    return render_template('login.html', error=error)
 
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    return "Post " + str(post_id)
+def valid_login(username, password):
+    if username == password:
+        return True
+    else:
+        return False
+
+@app.route('/welcome/<username>')
+def welcome(username):
+    return render_template('welcome.html', username=username)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    host = os.getenv('IP', '0.0.0.0')
+    port = int(os.getenv('PORT', 8000))
+    app.debug = True
+    app.run(host=host, port=port)

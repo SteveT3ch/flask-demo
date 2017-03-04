@@ -5,7 +5,10 @@
     <title>Flask demo app</title>
   </head>
   <body>
-    <h1>Flask demo app is alive</h1>
-    <h2>Up and running</h2>
+    {% if name %}
+      <h1>Hello Flask {{ name }}</h1>
+    {% else %}
+      <h1>Hello World</h1>
+    {% endif %}
   </body>
 </html>

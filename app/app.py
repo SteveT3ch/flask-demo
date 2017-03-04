@@ -1,6 +1,7 @@
 import os
 import uuid
-from flask import Flask, request, render_template, url_for, redirect, flash
+from flask import Flask, request, render_template \
+                  , url_for, redirect, flash, make_response
 
 app = Flask(__name__)
 app.secret_key = uuid.uuid4().hex
@@ -13,7 +14,9 @@ def login():
         password = request.form['password']
         if valid_login(username, password):
             flash("Successfully logged in")
-            return redirect(url_for('welcome', username=username))
+            response = make_response(redirect(url_for('welcome')))
+            response.set_cookie('username', username)
+            return response
         else:
             error = 'Incorrect username and password'
 
@@ -25,9 +28,19 @@ def valid_login(username, password):
     else:
         return False
 
-@app.route('/welcome/<username>')
-def welcome(username):
-    return render_template('welcome.html', username=username)
+@app.route('/logout')
+def logout():
+    response = make_response(redirect(url_for('login')))
+    response.set_cookie('username', '', expires=0)
+    return response
+
+@app.route('/')
+def welcome():
+    username = request.cookies.get('username')
+    if username:
+        return render_template('welcome.html', username=username)
+    else:
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     host = os.getenv('IP', '0.0.0.0')

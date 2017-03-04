@@ -1,7 +1,9 @@
 import os
-from flask import Flask, request, render_template, url_for, redirect
+import uuid
+from flask import Flask, request, render_template, url_for, redirect, flash
 
 app = Flask(__name__)
+app.secret_key = uuid.uuid4().hex
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -10,6 +12,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if valid_login(username, password):
+            flash("Successfully logged in")
             return redirect(url_for('welcome', username=username))
         else:
             error = 'Incorrect username and password'

@@ -46,7 +46,9 @@ if __name__ == '__main__':
     host = os.getenv('IP', '0.0.0.0')
     port = int(os.getenv('PORT', 8000))
     app.debug = True
-    handler = RotatingFileHandler('error.log', maxBytes=1000, backupCount=1)
-    handler.setlevel(logging, INFO)
+
+    # logging
+    handler = RotatingFileHandler('error.log', maxBytes=10000, backupCount=1)
+    handler.setlevel(logging.INFO)
     app.logger.addHandler(handler)
     app.run(host=host, port=port)

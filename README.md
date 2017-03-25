@@ -1,7 +1,7 @@
 Demo Project
 ============
 
-![Docker Compose](https://github.com/SteveT3ch/flask-demo/blob/master/docker_logo.png?raw=true"Docker Compose Logo demo")
+![Docker Compose](https://raw.githubusercontent.com/Stevet3ch/flask-demo/master/docker_logo.png?raw=true"Docker Compose Logo demo")
 
 Demo project to learn the fundamental of using git and docker in a real project
 [create a link to google](http://www.google.com)

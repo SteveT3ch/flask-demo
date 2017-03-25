@@ -1,4 +1,10 @@
 {% extends 'layout.html' %}
+{% block head %}
+  {{ super() }}
+  <script type="text/javascript">
+    document.write("<h1>Head over hills</h1>")
+  </script>
+{% endblock%}
 {% block title %}Welcome{% endblock %}
 {% block content %}
   <h1>Welcome back {{ username }}</h1>

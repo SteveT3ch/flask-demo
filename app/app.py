@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template \
-                  , url_for, redirect, flash \
-                  , make_response, session
+                  , url_for, redirect, flash, session
 import logging
 from logging.handlers import RotatingFileHandler
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = '''
@@ -12,7 +12,7 @@ TdiTE7f9aIpYKmp9u7beix5uzIUfNTDBo1WS3EMBk8Q'
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == 'POST' and request.form['username'] is not '':
+    if request.method == 'POST' and request.form['username']:
         username = request.form['username']
         password = request.form['password']
         if valid_login(username, password):
@@ -21,7 +21,7 @@ def login():
             return redirect(url_for('welcome'))
         else:
             error = 'Incorrect username and password'
-            app.logger.warning("Incorrect username and password for user {}".format(username))
+            app.logger.warning("Incorrect username and password for user {username}".format(username=username))
     return render_template('login.html', error=error)
 
 def valid_login(username, password):
@@ -32,6 +32,7 @@ def valid_login(username, password):
 
 @app.route('/logout')
 def logout():
+    # remove session
     session.pop('username', None)
     return redirect(url_for('login'))
 
